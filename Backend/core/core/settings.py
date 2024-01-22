@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 ]
 EXTERNAL_APPS = [ 
     'api',
+    'products',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
