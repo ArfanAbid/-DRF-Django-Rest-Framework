@@ -4,11 +4,11 @@ from rest_framework.response import Response
 
 from products.models import Product
 from products.serializers import ProductSerializer
+from django.http import JsonResponse,HttpResponse 
 
 
 
 
-#from django.http import JsonResponse,HttpResponse 
 #def api_home(request, *args,**kwargs):
     # request -> HttpRequest in django
     # print(dir(request))
@@ -48,13 +48,13 @@ from products.serializers import ProductSerializer
 
     return HttpResponse(json_data_str,headers={"content-type": "application/json"})'''
 
-@api_view(["GET"])
+@api_view(["POST"])
 def api_home(request, *args,**kwargs):
                 # DRF API view
-    instance=Product.objects.all().order_by("?").first()
-    data={}
-    if instance:
-        #data=model_to_dict(instance,fields=['id','title','price'])
-        data=ProductSerializer(instance).data
-        return Response(data)
-
+    serializer=ProductSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        # instance=serializer.save() # like forms -> instance=forms.save(commit=False)
+        print(serializer.data)
+        return Response(serializer.data)
+    else:
+        return Response({"invalid":"not good data"},status=400)
