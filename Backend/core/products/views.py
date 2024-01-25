@@ -1,4 +1,4 @@
-from rest_framework  import generics
+from rest_framework  import generics,mixins
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -79,3 +79,45 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
     def perform_delete(self, instance):
         #instance
         super().perform_delete(instance)
+
+
+        ''' OR '''
+
+
+class ProductMixinViews(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView
+    ):
+    queryset = Product.objects.all()
+    serializer_class =ProductSerializer
+    lookup_field = 'pk'
+    # this function is for reterieve and List:
+    def get(self,request,*args,**kwargs): # HTTP -> get
+        print(args,kwargs)
+        pk =kwargs.get('pk')
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request,*args,**kwargs)
+    # this function is for  create and requires a lookup_field ='pk'  :
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
+    def perform_create(self, serializer):
+        title=serializer.validated_data.get('title')
+        content=serializer.validated_data.get('content') or None
+        if content is None:
+            content="Adding custom content by my Own"
+        serializer.save(content=content)
+    
+
+
+'''
+Actually seperate forms is like this : 
+and similar for other like reterieve,delete...
+we can do it either seperately or in a single class
+
+
+class create(mixins.CreateModelMixin,generics.GenericAPIView):
+    pass  '''
