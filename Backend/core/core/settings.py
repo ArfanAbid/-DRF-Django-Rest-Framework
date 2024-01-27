@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
     ],
     
     'DEFAULT_PERMISSION_CLASSES':[
-        "rest_framework.authentication.IsAuthenticatedOrReadOnlyAuthent",
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ], 
 
 
