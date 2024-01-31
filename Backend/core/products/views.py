@@ -14,6 +14,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView,StaffEditorPermissionM
     # permission_classes = [permissions.IsAdminUser,IsStaffEditorPermission]
 
     def perform_create(self, serializer):
+        email=serializer.validated_data.pop('email')
         title=serializer.validated_data.get('title')
         content=serializer.validated_data.get('content') or None
         if content is None:
