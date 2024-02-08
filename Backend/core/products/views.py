@@ -21,11 +21,11 @@ class ProductListCreateAPIView(generics.ListCreateAPIView,StaffEditorPermissionM
             content=title
         serializer.save(content=content)
 
-    def get_queryset(self,*args,**kwargs):
-        qs=super().get_queryset()
-        request=self.request
-        user=request.user
-        return qs.filter(user=request.user)    
+    # def get_queryset(self,*args,**kwargs):
+    #     qs=super().get_queryset()
+    #     request=self.request
+    #     user=request.user
+    #     return qs.filter(user=request.user)    
 
 
 class ProductDetailAPIView(generics.RetrieveAPIView,StaffEditorPermissionMixin):

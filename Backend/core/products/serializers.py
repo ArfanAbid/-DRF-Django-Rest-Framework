@@ -12,7 +12,7 @@ class ProductSerializer(serializers.ModelSerializer):
     # email=serializers.EmailField(wite_only=True)
     class Meta:
         model=Product
-        fields=('user','url','edit_url','pk','title','content','price','sale_price','my_discount',)
+        fields=('url','edit_url','pk','title','content','price','sale_price','my_discount',)
 
     # def validate_title(self, value):
     #     request=self.context.get('request') 
