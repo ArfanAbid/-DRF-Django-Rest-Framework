@@ -132,3 +132,21 @@ we can do it either seperately or in a single class
 
 class create(mixins.CreateModelMixin,generics.GenericAPIView):
     pass  '''
+
+
+# search 
+
+class SearchListView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def get_queryset(self,*args, **kwargs):
+        qs=super().get_queryset(*args, **kwargs)
+        q=self.request.GET.get('q')
+        result=Product.objects.none()
+        if q is not None:
+            user=None
+            if self.request.user.is_authenticated:
+                user=self.request.user
+            result=qs.search(q, user=user)
+        return result    

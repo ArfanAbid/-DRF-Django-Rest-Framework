@@ -6,4 +6,5 @@ urlpatterns = [
     path('<int:pk>/', views.ProductDetailAPIView.as_view(),name='product-detail'),
     path('<int:pk>/update/', views.ProductUpdateAPIView.as_view(),name='product-edit'), # Reterieve Mode
     path('<int:pk>/delete/', views.ProductDestroyAPIView.as_view()),
+    path('search/', views.SearchListView.as_view()),# search
 ]
