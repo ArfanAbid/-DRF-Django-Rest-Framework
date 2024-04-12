@@ -45,6 +45,7 @@ EXTERNAL_APPS = [
     'rest_framework_simplejwt',
     'api',
     'products',
+    'corsheaders',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
@@ -52,6 +53,8 @@ INSTALLED_APPS += EXTERNAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -60,6 +63,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
+CORS_URLS_REGEX = r"^/api/.*$"
+CORS_ALLOWED_ORIGINS =[]
+
+if DEBUG:
+    CORS_ALLOWED_ORIGINS += [
+    'http://localhost:8111',
+    'https://localhost:8111',
+    ]
+
+
+
 
 TEMPLATES = [
     {
@@ -187,3 +201,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+#arfan
+#arfan123
