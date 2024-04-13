@@ -1,4 +1,5 @@
 const loginForm=document.getElementById('login-form');
+const searchForm=document.getElementById('search-form');
 const contentContainer=document.getElementById('content-container');
 const baseEndpoint="http://localhost:8000/api";
 
@@ -123,3 +124,55 @@ function getProductList(){
 
 validdataJWTToken()
 // getProductList()
+
+
+// *************** Search   ***********************
+
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(searchForm);
+    let data = Object.fromEntries(formData);
+    let searchParams = new URLSearchParams(data);
+    const endpoint = `${baseEndpoint}/products/search/?${searchParams}`;
+    console.log(endpoint);
+    const headers = {
+        "Content-Type": "application/json",
+    }
+
+    const authToken = localStorage.getItem('access') 
+    if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`
+    }
+    const options = {
+        method: "GET",
+        headers: headers
+    }
+    
+    fetch(endpoint, options)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json()})
+        .then(data => {
+            const validData = isTokenValid(data)
+        if (validData && contentContainer){
+            contentContainer.innerHTML = ""
+            if (data && data.hits) {
+                let htmlStr  = ""
+                for (let result of data.hits) {
+                    htmlStr += "<li>"+ result.title + "</li>"
+                }
+                contentContainer.innerHTML = htmlStr
+                if (data.hits.length === 0) {
+                    contentContainer.innerHTML = "<p>No results found</p>"
+                }
+            } else {
+                contentContainer.innerHTML = "<p>No results found</p>"
+            }
+        }
+})
+        .catch(error => {
+            console.log(error);
+        });
+});
